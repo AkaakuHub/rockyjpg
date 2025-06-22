@@ -104,7 +104,7 @@
                 statusCell.innerHTML = '<span class="status-badge submitted">✅ 提出済み</span>';
                 row.classList.add('submitted-row');
             } else {
-                statusCell.innerHTML = '<span class="status-badge not-submitted">⭕ 未提出</span>';
+                statusCell.innerHTML = '<span class="status-badge not-submitted">❌ 未提出</span>';
                 row.classList.add('not-submitted-row');
             }
             row.appendChild(statusCell);
