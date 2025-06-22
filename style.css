@@ -109,7 +109,7 @@ table[border="3"] tbody tr:first-child td {
 
 /* テーブルデータ行 */
 table[border="3"] tbody tr:not(:first-child) td {
-    padding: 18px 15px;
+    padding: 4px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.05);
     vertical-align: middle;
     text-align: center;
@@ -228,6 +228,85 @@ table[border="3"] tbody tr:not(:first-child):hover {
     letter-spacing: 1px;
 }
 
+/* === 提出詳細セル（縦配置レイアウト） === */
+.details-cell {
+    padding: 15px !important;
+    text-align: left !important;
+    vertical-align: top !important;
+    max-width: 350px;
+}
+
+.detail-container {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.detail-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 6px 0;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.detail-row:last-child {
+    border-bottom: none;
+}
+
+.detail-label {
+    font-weight: 700;
+    color: #4a5568;
+    font-size: 0.8rem;
+    min-width: 70px;
+    flex-shrink: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-value {
+    font-weight: 500;
+    color: #2d3748;
+    font-size: 0.85rem;
+    flex: 1;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+.detail-value a {
+    color: #3182ce;
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.detail-value a:hover {
+    color: #2c5aa0;
+    text-decoration: underline;
+}
+
+/* 採点バッジのスタイル */
+.detail-value font[color="#0000ff"] {
+    background: linear-gradient(135deg, #4299e1, #3182ce);
+    color: white !important;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.detail-value font[color="#ff0000"] {
+    background: linear-gradient(135deg, #f56565, #e53e3e);
+    color: white !important;
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
 /* === コメントセル === */
 .comment-cell {
     max-width: 300px;
@@ -238,6 +317,7 @@ table[border="3"] tbody tr:not(:first-child):hover {
     color: #4a5568;
     padding: 15px !important;
     text-align: left !important;
+    vertical-align: top !important;
 }
 
 .comment-cell:hover {
@@ -289,8 +369,9 @@ form[enctype="multipart/form-data"] table td {
     color: #4a5568;
 }
 
+/* 課題IDの表示 */
 form[enctype="multipart/form-data"] table td:first-child {
-    width: 150px;
+    width: 80px;
     text-align: right;
     padding-right: 20px;
 }
@@ -445,11 +526,24 @@ p {
     table[border="3"] tbody tr {
         display: table-row;
         width: 100%;
-        min-width: 800px;
+        min-width: 900px;
+    }
+    
+    .details-cell {
+        max-width: 250px;
+    }
+    
+    .detail-label {
+        min-width: 60px;
+        font-size: 0.75rem;
+    }
+    
+    .detail-value {
+        font-size: 0.8rem;
     }
     
     .comment-cell {
-        max-width: 150px;
+        max-width: 200px;
         font-size: 0.75rem;
     }
     
@@ -488,11 +582,36 @@ p {
 
 @media (max-width: 480px) {
     table[border="3"] tbody tr {
-        min-width: 600px;
+        min-width: 700px;
     }
     
     table[border="3"] tbody tr:not(:first-child) td {
-        padding: 12px 8px;
+        padding: 4px;
+    }
+    
+    .details-cell {
+        max-width: 200px;
+    }
+    
+    .detail-row {
+        flex-direction: column;
+        gap: 4px;
+        padding: 4px 0;
+    }
+    
+    .detail-label {
+        min-width: auto;
+        font-size: 0.7rem;
+        margin-bottom: 2px;
+    }
+    
+    .detail-value {
+        font-size: 0.75rem;
+    }
+    
+    .comment-cell {
+        max-width: 150px;
+        font-size: 0.7rem;
     }
     
     .submit-btn {

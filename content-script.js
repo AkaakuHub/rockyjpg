@@ -59,8 +59,8 @@
         // テーブルヘッダーの拡張
         const headerRow = assignmentTable.querySelector('tbody tr');
         if (headerRow) {
-            // 新しいヘッダーを追加
-            const newHeaders = ['提出状況', '提出ファイル', '採点', 'コメント', '操作'];
+            // 新しいヘッダーを追加（提出時間も含む）
+            const newHeaders = ['提出状況', '提出詳細', 'コメント', '操作'];
             newHeaders.forEach(headerText => {
                 const th = document.createElement('td');
                 th.textContent = headerText;
@@ -109,19 +109,41 @@
             }
             row.appendChild(statusCell);
             
-            // 提出ファイルセル
-            const fileCell = document.createElement('td');
-            fileCell.innerHTML = submissionData ? submissionData.file : '---';
-            row.appendChild(fileCell);
+            // 提出詳細セル（ファイル・提出時間・採点を縦に配置）
+            const detailsCell = document.createElement('td');
+            detailsCell.classList.add('details-cell');
             
-            // 採点セル
-            const gradingCell = document.createElement('td');
-            if (submissionData && submissionData.grading) {
-                gradingCell.innerHTML = submissionData.grading;
+            let detailsHtml = '<div class="detail-container">';
+            
+            // ファイル情報
+            const fileInfo = submissionData ? submissionData.file : '---';
+            detailsHtml += `<div class="detail-row"><span class="detail-label">ファイル:</span><span class="detail-value">${fileInfo}</span></div>`;
+            
+            // 提出時間
+            const submitTime = submissionData ? submissionData.submitTime : '---';
+            if (submitTime && submitTime !== '---') {
+                // 提出時間のフォーマット変換（例：05081646 → 05/08 16:46）
+                if (submitTime.length === 8) {
+                    const month = submitTime.substring(0, 2);
+                    const day = submitTime.substring(2, 4);
+                    const hour = submitTime.substring(4, 6);
+                    const minute = submitTime.substring(6, 8);
+                    const formattedTime = `${month}/${day} ${hour}:${minute}`;
+                    detailsHtml += `<div class="detail-row"><span class="detail-label">提出時間:</span><span class="detail-value">${formattedTime}</span></div>`;
+                } else {
+                    detailsHtml += `<div class="detail-row"><span class="detail-label">提出時間:</span><span class="detail-value">${submitTime}</span></div>`;
+                }
             } else {
-                gradingCell.textContent = '---';
+                detailsHtml += `<div class="detail-row"><span class="detail-label">提出時間:</span><span class="detail-value">---</span></div>`;
             }
-            row.appendChild(gradingCell);
+            
+            // 採点
+            const grading = submissionData && submissionData.grading ? submissionData.grading : '---';
+            detailsHtml += `<div class="detail-row"><span class="detail-label">採点:</span><span class="detail-value">${grading}</span></div>`;
+            
+            detailsHtml += '</div>';
+            detailsCell.innerHTML = detailsHtml;
+            row.appendChild(detailsCell);
             
             // コメントセル
             const commentCell = document.createElement('td');
@@ -131,15 +153,15 @@
             
             // 操作セル（提出ボタン）
             const actionCell = document.createElement('td');
-            if (!isSubmitted) {
-                const submitBtn = document.createElement('button');
-                submitBtn.textContent = '提出';
-                submitBtn.className = 'submit-btn';
-                submitBtn.dataset.assignmentId = assignmentId;
-                actionCell.appendChild(submitBtn);
-            } else {
-                actionCell.innerHTML = '<span class="completed-mark">完了</span>';
-            }
+            // if (!isSubmitted) {
+            const submitBtn = document.createElement('button');
+            submitBtn.textContent = '提出';
+            submitBtn.className = 'submit-btn';
+            submitBtn.dataset.assignmentId = assignmentId;
+            actionCell.appendChild(submitBtn);
+            // } else {
+            //     actionCell.innerHTML = '<span class="completed-mark">完了</span>';
+            // }
             row.appendChild(actionCell);
         });
 
