@@ -8,6 +8,10 @@
     box-sizing: border-box;
 }
 
+table{
+    margin: 0!important;
+}
+
 body {
     margin: 0;
     padding: 0;
@@ -52,6 +56,157 @@ hr {
 font[color] {
     color: inherit !important;
     font-weight: 600;
+}
+
+/* === 提出状況サマリーカード === */
+.submission-summary {
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(248, 250, 252, 0.95));
+    backdrop-filter: blur(15px);
+    border-radius: 20px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    width: 100%;
+    position: relative;
+    overflow: hidden;
+}
+
+.submission-summary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, #4299e1, #48bb78, #ed8936);
+}
+
+.summary-content {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.summary-stats {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+}
+
+.stat-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+}
+
+.stat-number {
+    font-size: 2.5rem;
+    font-weight: 800;
+    color: #2d3748;
+    line-height: 1;
+}
+
+.stat-label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #4a5568;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.stat-divider {
+    font-size: 2rem;
+    font-weight: 300;
+    color: #a0aec0;
+}
+
+.completion-rate {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.progress-bar {
+    width: 100%;
+    max-width: 300px;
+    height: 8px;
+    background: rgba(160, 174, 192, 0.3);
+    border-radius: 20px;
+    overflow: hidden;
+    position: relative;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #4299e1, #48bb78);
+    border-radius: 20px;
+    transition: width 1s ease-out;
+    box-shadow: 0 2px 10px rgba(66, 153, 225, 0.3);
+}
+
+.rate-text {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.remaining-alert {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, rgba(237, 137, 54, 0.15), rgba(255, 178, 102, 0.15));
+    border: 2px solid rgba(237, 137, 54, 0.3);
+    border-radius: 15px;
+    padding: 15px 25px;
+    animation: pulse 2s infinite;
+}
+
+.alert-icon {
+    font-size: 1.5rem;
+}
+
+.alert-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #c05621;
+}
+
+.completion-badge {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: linear-gradient(135deg, rgba(72, 187, 120, 0.15), rgba(56, 178, 172, 0.15));
+    border: 2px solid rgba(72, 187, 120, 0.3);
+    border-radius: 15px;
+    padding: 15px 25px;
+    animation: celebrate 3s ease-in-out infinite;
+}
+
+.badge-icon {
+    font-size: 1.5rem;
+}
+
+.badge-text {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #2f855a;
+}
+
+@keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.02); }
+}
+
+@keyframes celebrate {
+    0%, 100% { transform: scale(1) rotate(0deg); }
+    25% { transform: scale(1.05) rotate(1deg); }
+    75% { transform: scale(1.05) rotate(-1deg); }
 }
 
 /* === 学生情報テーブル === */
@@ -289,7 +444,7 @@ table[border="3"] tbody tr:not(:first-child):hover {
     background: linear-gradient(135deg, #4299e1, #3182ce);
     color: white !important;
     padding: 4px 8px;
-    border-radius: 12px;
+    border-radius: 2px;
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -300,7 +455,7 @@ table[border="3"] tbody tr:not(:first-child):hover {
     background: linear-gradient(135deg, #f56565, #e53e3e);
     color: white !important;
     padding: 4px 8px;
-    border-radius: 12px;
+    border-radius: 2px;
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -508,6 +663,31 @@ p {
         font-size: 1.5rem;
         padding: 20px;
         margin-bottom: 20px;
+    }
+    
+    /* サマリーカードのモバイル対応 */
+    .submission-summary {
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+    
+    .stat-number {
+        font-size: 2rem;
+    }
+    
+    .summary-stats {
+        gap: 15px;
+    }
+    
+    .remaining-alert, .completion-badge {
+        padding: 12px 20px;
+        flex-direction: column;
+        text-align: center;
+        gap: 8px;
+    }
+    
+    .alert-text, .badge-text {
+        font-size: 1rem;
     }
     
     table[border="3"] {
