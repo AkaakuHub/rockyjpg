@@ -32,22 +32,26 @@
             const rows = submissionStatusTable.querySelectorAll('tbody tr');
             rows.forEach(row => {
                 const cells = row.querySelectorAll('td');
-                if (cells.length < 1) return;
+                if (cells.length < 2) return; // ファイルセルがない場合は未提出
 
                 const idCell = cells[0];
                 const idLink = idCell.querySelector('a');
-                // 課題IDの取得方法をaタグの有無で分岐
                 const id = idLink ? idLink.textContent.trim() : idCell.textContent.trim();
 
-                if (!id) return; // 空の行はスキップ
+                if (!id) return;
 
-                const fileCell = cells.length > 1 ? cells[1].innerHTML : '---';
+                // ファイルセルの存在と内容をチェック
+                const fileCell = cells[1];
+                const hasFile = fileCell && fileCell.innerHTML.trim() && fileCell.querySelector('a');
+                
+                if (!hasFile) return; // ファイルリンクがない場合は未提出扱い
+
                 const timeCell = cells.length > 2 ? cells[2].textContent.trim() : '---';
                 const gradingCell = cells.length > 3 ? cells[3].innerHTML : '---';
                 const commentCell = cells.length > 4 ? cells[4].innerHTML.trim() : '---';
 
                 submittedData.set(id, {
-                    file: fileCell,
+                    file: fileCell.innerHTML,
                     time: timeCell,
                     grading: gradingCell,
                     comment: commentCell,
@@ -222,170 +226,29 @@
             }
         });
 
-        // --- 5. CSSを注入 ---
-        const style = document.createElement('style');
-        style.textContent = `
-/* ==========================================================================
-   課題提出ページ改善 CSS
-   ========================================================================== */
-
-/* --- 全体的なスタイル調整 --- */
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
-    background-color: #f8f9fa;
-    color: #212529;
-    line-height: 1.6;
-    margin: 0;
-    padding: 0;
-}
-
-/* --- コンテンツのラッパー --- */
-.homework-wrapper {
-    max-width: 1200px;
-    margin: 20px auto;
-    padding: 2em;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-/* --- 古い要素の非表示・調整 --- */
-hr {
-    display: none;
-}
-center h3 {
-    font-size: 1.8em;
-    color: #343a40;
-    margin-bottom: 1em;
-    font-weight: 600;
-}
-font[color="#ff0000"], font[color="#0000ff"] {
-    color: inherit !important;
-    font-weight: 600;
-}
-
-/* --- テーブルのスタイル --- */
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5em 0;
-    font-size: 0.95em;
-    border: 1px solid #dee2e6;
-    border-radius: 8px; /* For Safari */
-    overflow: hidden;
-    table-layout: fixed; /* カラム幅の固定 */
-}
-th, td {
-    padding: 12px 15px;
-    text-align: left;
-    border-bottom: 1px solid #dee2e6;
-    vertical-align: middle;
-    word-wrap: break-word; /* テキストの折り返し */
-}
-
-thead th {
-    background-color: #f1f3f5;
-    font-weight: 600;
-    color: #495057;
-    text-transform: uppercase;
-    font-size: 0.85em;
-    letter-spacing: 0.5px;
-}
-tbody tr:last-child td {
-    border-bottom: none;
-}
-tbody tr:hover {
-    background-color: #f1f3f5;
-}
-
-/* --- カラム幅の調整 --- */
-table thead th:nth-child(1) { width: 10%; } /* 課題 */
-table thead th:nth-child(2) { width: 7%; }  /* 提出日 */
-table thead th:nth-child(3) { width: 9%; }  /* 〆切 */
-table thead th:nth-child(4) { width: 11%; } /* 提出状況 */
-table thead th:nth-child(5) { width: 12%; } /* 〆切までの残り */
-table thead th:nth-child(6) { width: 12%; } /* 提出ファイル */
-table thead th:nth-child(7) { width: 8%; }  /* 採点 */
-table thead th:nth-child(8) { width: 23%; } /* コメント */
-table thead th:nth-child(9) { width: 8%; }  /* 操作 */
-
-
-/* --- 課題の状態別スタイル --- */
-tr.submitted {
-    background-color: #e6f9f0; /* 提出済み: 薄緑 */
-    color: #555;
-}
-tr.submitted a { color: #0056b3; }
-tr.not-submitted {
-    /* background-color: #fff9e6; */ /* 未提出: 薄黄は不要かも */
-}
-tr.missed-submission {
-    background-color: #fff2f2; /* 期限切れ未提出: 薄赤 */
-    color: #888;
-}
-tr.missed-submission td:not(:first-child) {
-     text-decoration: line-through;
-     color: #adb5bd;
-}
-tr.missed-submission a { color: #adb5bd; }
-
-/* --- 〆切のハイライト --- */
-.deadline-soon, tr.deadline-soon td:nth-child(5) {
-    font-weight: bold;
-    color: #fd7e14 !important; /* 〆切間近: オレンジ */
-}
-.deadline-today, tr.deadline-today td:nth-child(5) {
-    font-weight: bold;
-    color: #dc3545 !important; /* 本日〆切: 赤 */
-    animation: blink 1.5s linear infinite;
-}
-
-@keyframes blink {
-    50% { opacity: 0.5; }
-}
-
-/* --- ステータスアイコン/バッジ --- */
-.status-icon, .status-badge {
-    padding: 4px 10px;
-    border-radius: 12px;
-    font-size: 0.85em;
-    font-weight: 600;
-    white-space: nowrap;
-}
-.status-icon.submitted { background-color: #28a745; color: white; }
-.status-icon.not-submitted { background-color: #ffc107; color: #212529; }
-.status-badge.graded { background-color: #007bff; color: white; }
-.status-badge.not-graded { background-color: #fd7e14; color: white; }
-.comment-cell { font-size: 0.9em; color: #495057; }
-
-/* --- 提出ボタン --- */
-.submit-button {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    padding: 8px 14px;
-    border-radius: 4px;
-    font-size: 0.9em;
-    font-weight: bold;
-}
-.submit-button:hover {
-    background-color: #0056b3;
-}
-
-/* --- 説明文等のスタイル --- */
-p {
-    color: #6c757d;
-    font-size: 0.9em;
-}
-address {
-    margin-top: 2em;
-    text-align: center;
-    font-style: normal;
-    color: #6c757d;
-}
-        `;
-        document.head.appendChild(style);
+        // --- 5. 外部CSSファイルを読み込み ---
+        const link = document.createElement('link');
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = chrome.runtime.getURL('style.css');
+        document.head.appendChild(link);
+        
+        // テーブルのdata-label属性を追加（レスポンシブ対応用）
+        const addDataLabels = () => {
+            const table = document.querySelector('table');
+            if (table) {
+                const headers = ['課題', '提出日', '〆切', '提出状況', '〆切までの残り', '提出ファイル', '採点', 'コメント', '操作'];
+                const rows = table.querySelectorAll('tbody tr');
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    cells.forEach((cell, index) => {
+                        if (headers[index]) {
+                            cell.setAttribute('data-label', headers[index]);
+                        }
+                    });
+                });
+            }
+        };
+        addDataLabels();
     });
 })();
