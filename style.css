@@ -1,0 +1,169 @@
+/* ==========================================================================
+   課題提出ページ改善 CSS
+   ========================================================================== */
+
+/* --- 全体的なスタイル調整 --- */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif;
+    background-color: #f8f9fa;
+    color: #212529;
+    line-height: 1.6;
+    margin: 0;
+    padding: 20px;
+}
+
+/* --- コンテンツのラッパー --- */
+.homework-wrapper {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 2em;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* --- 古い要素の非表示・調整 --- */
+hr {
+    display: none;
+}
+
+center h3 {
+    font-size: 1.8em;
+    color: #343a40;
+    margin-bottom: 1em;
+    font-weight: 600;
+}
+
+font[color="#ff0000"],
+font[color="#0000ff"] {
+    color: inherit !important;
+    font-weight: 600;
+}
+
+/* --- テーブルのスタイル --- */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5em 0;
+    font-size: 0.95em;
+    border: 1px solid #dee2e6;
+    border-radius: 8px; /* For Safari */
+    overflow: hidden;
+}
+
+th, td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid #dee2e6;
+    vertical-align: middle;
+}
+
+thead th {
+    background-color: #f1f3f5;
+    font-weight: 600;
+    color: #495057;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.5px;
+}
+
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover {
+    background-color: #f1f3f5;
+}
+
+/* --- 課題の状態別スタイル --- */
+tr.submitted {
+    background-color: #e6f9f0; /* 提出済み: 薄緑 */
+    color: #555;
+}
+tr.not-submitted {
+    background-color: #fff9e6; /* 未提出: 薄黄 */
+}
+tr.missed-submission {
+    background-color: #f8f9fa; /* 期限切れ未提出: 薄グレー */
+    text-decoration: line-through;
+    color: #adb5bd;
+}
+tr.missed-submission a {
+    color: #adb5bd;
+}
+
+/* --- 〆切のハイライト --- */
+.deadline-soon, tr.deadline-soon td:nth-child(5) {
+    font-weight: bold;
+    color: #fd7e14 !important; /* 〆切間近: オレンジ */
+}
+.deadline-today, tr.deadline-today td:nth-child(5) {
+    font-weight: bold;
+    color: #dc3545 !important; /* 本日〆切: 赤 */
+    animation: blink 1.5s linear infinite;
+}
+
+@keyframes blink {
+    50% { opacity: 0.5; }
+}
+
+
+/* --- ステータスアイコン/バッジ --- */
+.status-icon, .status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.85em;
+    font-weight: 600;
+    white-space: nowrap;
+}
+.status-icon.submitted {
+    background-color: #28a745;
+    color: white;
+}
+.status-icon.not-submitted {
+    background-color: #ffc107;
+    color: #212529;
+}
+
+.status-badge.graded {
+    background-color: #007bff;
+    color: white;
+}
+.status-badge.not-graded {
+    background-color: #fd7e14;
+    color: white;
+}
+
+/* --- フォームのスタイル --- */
+select[name="exerciseID"], input[type="submit"] {
+    padding: 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1em;
+    margin-right: 10px;
+    vertical-align: middle;
+}
+
+input[type="submit"] {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+input[type="submit"]:hover {
+    background-color: #0056b3;
+}
+
+/* --- 説明文のスタイル --- */
+p {
+    color: #6c757d;
+    font-size: 0.9em;
+}
+
+address {
+    margin-top: 2em;
+    text-align: center;
+    font-style: normal;
+    color: #6c757d;
+}
