@@ -256,7 +256,7 @@ table[border="3"] tbody tr:first-child td {
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 1px;
-    padding: 20px 15px;
+    padding: 16px;
     text-align: center;
     border: none;
     word-wrap: break-word;
@@ -388,7 +388,6 @@ table[border="3"] tbody tr:not(:first-child):hover {
     padding: 15px !important;
     text-align: left !important;
     vertical-align: top !important;
-    max-width: 350px;
 }
 
 .detail-container {
@@ -426,6 +425,8 @@ table[border="3"] tbody tr:not(:first-child):hover {
     flex: 1;
     word-wrap: break-word;
     overflow-wrap: break-word;
+    min-width: 6rem;
+    max-width: 6rem;
 }
 
 .detail-value a {
@@ -526,9 +527,7 @@ form[enctype="multipart/form-data"] table td {
 
 /* 課題IDの表示 */
 form[enctype="multipart/form-data"] table td:first-child {
-    width: 80px;
     text-align: right;
-    padding-right: 20px;
 }
 
 /* ファイル入力フィールド */

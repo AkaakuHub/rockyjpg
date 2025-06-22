@@ -58,9 +58,13 @@
         // === 3. 提出回数情報の処理と表示 ===
 
         // 提出回数テーブルを検索（最後のテーブル）
-        const submissionCountTable = document.querySelector(
-            'table:not([border="3"])'
+        const allTables = document.querySelectorAll(
+            "table"
         );
+        // console.log("全テーブル:", allTables);
+        // 一番最後のテーブルを提出回数テーブルとする
+        const submissionCountTable = allTables[allTables.length - 1];
+        // console.log("提出回数テーブル:", submissionCountTable);
         let totalAssignments = 0;
         let submittedCount = 0;
 
@@ -186,11 +190,11 @@
             const statusCell = document.createElement("td");
             if (isSubmitted) {
                 statusCell.innerHTML =
-                    '<span class="status-badge submitted">✅ 提出済み</span>';
+                    '<span class="status-badge submitted">✅ 済</span>';
                 row.classList.add("submitted-row");
             } else {
                 statusCell.innerHTML =
-                    '<span class="status-badge not-submitted">❌ 未提出</span>';
+                    '<span class="status-badge not-submitted">❌ 未</span>';
                 row.classList.add("not-submitted-row");
             }
             row.appendChild(statusCell);
@@ -351,13 +355,13 @@
             formPrevNode = formPrevNode.previousSibling;
         }
 
-        // === 6. CSS注入 ===
+        // // === 6. CSS注入 ===
 
-        const link = document.createElement("link");
-        link.rel = "stylesheet";
-        link.type = "text/css";
-        link.href = chrome.runtime.getURL("style.css");
-        document.head.appendChild(link);
+        // const link = document.createElement("link");
+        // link.rel = "stylesheet";
+        // link.type = "text/css";
+        // link.href = chrome.runtime.getURL("style.css");
+        // document.head.appendChild(link);
 
         // === 7. ページ全体のラッパー作成 ===
 
